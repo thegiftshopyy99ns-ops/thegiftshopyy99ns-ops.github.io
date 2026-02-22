@@ -209,3 +209,132 @@
 ```
 
 ---
+
+
+```html
+<!-- Urdu Version -->
+<div lang="ur">
+  <h1>نغماتِ روح</h1>
+  <div class="subtitle">Naghmat_e_Ruh AI Studio</div>
+  <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+  <div class="message">
+    <p>ہمارا سفر شروع ہو چکا ہے۔</p>
+    <p>✨</p>
+    <p>پہلا AI نعت پلیٹ فارم جلد آرہا ہے</p>
+  </div>
+  <div class="btn-group">
+    <a href="#" class="btn" onclick="alert('جلد آرہا ہے!')">نعت بنائیں</a>
+    <a href="#" class="btn" onclick="alert('جلد آرہا ہے!')">لاگ ان / رجسٹر</a>
+  </div>
+</div>
+
+<!-- English Version -->
+<div lang="en">
+  <h1>Naghmat_e_Ruh</h1>
+  <div class="subtitle">Melodies of the Soul AI Studio</div>
+  <div class="bismillah">In the Name of Allah, the Most Gracious, the Most Merciful</div>
+  <div class="message">
+    <p>Our journey has begun.</p>
+    <p>✨</p>
+    <p>The first AI Naat platform is coming soon</p>
+  </div>
+  <div class="btn-group">
+    <a href="#" class="btn" onclick="alert('Coming soon!')">Create Naat</a>
+    <a href="#" class="btn" onclick="alert('Coming soon!')">Login / Register</a>
+  </div>
+</div>
+```
+
+----
+```html
+<!-- Language Switcher -->
+<style>
+  .lang-switch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+  }
+  .lang-btn {
+    background: rgba(212, 175, 55, 0.3);
+    color: white;
+    border: 1px solid gold;
+    padding: 8px 15px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s;
+  }
+  .lang-btn:hover {
+    background: gold;
+    color: black;
+  }
+  .lang-btn.active {
+    background: gold;
+    color: black;
+    font-weight: bold;
+  }
+  [lang="ur"] { display: block; }
+  [lang="en"] { display: none; }
+  body.en [lang="ur"] { display: none; }
+  body.en [lang="en"] { display: block; }
+</style>
+
+<!-- Language Switcher Buttons -->
+<div class="lang-switch">
+  <button class="lang-btn active" onclick="setLanguage('ur')">اردو</button>
+  <button class="lang-btn" onclick="setLanguage('en')">English</button>
+</div>
+
+<script>
+  function setLanguage(lang) {
+    document.body.classList.remove('ur', 'en');
+    document.body.classList.add(lang);
+    
+    // Update active button
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    if (lang === 'ur') {
+      document.querySelectorAll('.lang-btn')[0].classList.add('active');
+    } else {
+      document.querySelectorAll('.lang-btn')[1].classList.add('active');
+    }
+  }
+</script>
+```
+```html
+<!-- Urdu Version -->
+<div lang="ur">
+  <h1>نغماتِ روح</h1>
+  <div class="subtitle">Naghmat_e_Ruh AI Studio</div>
+  <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+  <div class="message">
+    <p>ہمارا سفر شروع ہو چکا ہے۔</p>
+    <p>✨</p>
+    <p>پہلا AI نعت پلیٹ فارم جلد آرہا ہے</p>
+  </div>
+  <div class="btn-group">
+    <a href="#" class="btn" onclick="alert('جلد آرہا ہے!')">نعت بنائیں</a>
+    <a href="#" class="btn" onclick="alert('جلد آرہا ہے!')">لاگ ان / رجسٹر</a>
+  </div>
+</div>
+
+<!-- English Version -->
+<div lang="en">
+  <h1>Naghmat_e_Ruh</h1>
+  <div class="subtitle">Melodies of the Soul AI Studio</div>
+  <div class="bismillah">In the Name of Allah, the Most Gracious, the Most Merciful</div>
+  <div class="message">
+    <p>Our journey has begun.</p>
+    <p>✨</p>
+    <p>The first AI Naat platform is coming soon</p>
+  </div>
+  <div class="btn-group">
+    <a href="#" class="btn" onclick="alert('Coming soon!')">Create Naat</a>
+    <a href="#" class="btn" onclick="alert('Coming soon!')">Login / Register</a>
+  </div>
+</div>
+```
+
+---
