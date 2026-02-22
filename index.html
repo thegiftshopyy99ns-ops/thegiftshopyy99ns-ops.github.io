@@ -1,11 +1,16 @@
-html
+
+```html
 <!DOCTYPE html>
 <html lang="ur">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نغماتِ روح - Naghmat_e_Ruh</title>
-    <!-- اسلامی طرز کے فونٹس اور ڈیزائن -->
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+    <!-- فونٹ اور اسٹائل -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
@@ -17,302 +22,190 @@ html
         }
         
         body {
-            background: linear-gradient(145deg, #0a3a2e 0%, #1a5f4b 100%);
+            background: radial-gradient(ellipse at top, #0a4b33, #05281c);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Noto Nastaliq Urdu', 'Amiri', serif;
             padding: 20px;
-            position: relative;
-            overflow-x: hidden;
+            color: white;
         }
         
-        /* اسلامی طرز کے پس منظر کے عناصر */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 30%),
-                radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.03) 0%, transparent 40%),
-                repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.02) 0px, rgba(212, 175, 55, 0.02) 2px, transparent 2px, transparent 8px);
-            pointer-events: none;
-        }
-        
-        .islamic-pattern {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100px;
-            background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.1));
-            border-top: 2px solid rgba(212, 175, 55, 0.3);
-            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
-            transform: rotate(-2deg) scale(1.1);
-            z-index: 0;
-        }
-        
-        .islamic-pattern::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 10%),
-                radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 10%);
-        }
-        
-        .container {
-            position: relative;
-            z-index: 10;
-            max-width: 1000px;
-            width: 100%;
-            background: rgba(10, 50, 35, 0.7);
+        .main-card {
+            background: rgba(20, 50, 40, 0.75);
             backdrop-filter: blur(12px);
             border-radius: 40px;
-            padding: 50px 40px;
-            box-shadow: 
-                0 25px 50px -12px rgba(0, 0, 0, 0.5),
-                0 0 0 2px rgba(212, 175, 55, 0.3),
-                0 0 0 4px rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(212, 175, 55, 0.4);
-        }
-        
-        /* اسلامی طرز کی سرحدیں */
-        .border-ornament {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            bottom: 20px;
-            border: 2px solid rgba(212, 175, 55, 0.2);
-            border-radius: 30px;
-            pointer-events: none;
-        }
-        
-        .border-ornament::before,
-        .border-ornament::after {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border: 2px solid rgba(212, 175, 55, 0.4);
-        }
-        
-        .border-ornament::before {
-            top: -2px;
-            left: -2px;
-            border-right: none;
-            border-bottom: none;
-        }
-        
-        .border-ornament::after {
-            bottom: -2px;
-            right: -2px;
-            border-left: none;
-            border-top: none;
-        }
-        
-        .header {
+            padding: 40px 30px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(212, 175, 55, 0.3) inset;
+            border: 1px solid rgba(212, 175, 55, 0.5);
             text-align: center;
-            margin-bottom: 40px;
         }
         
-        .crescent {
-            font-size: 5rem;
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 10px;
             color: #d4af37;
-            display: inline-block;
-            margin-bottom: 15px;
-            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
         }
         
         h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #d4af37;
-            margin-bottom: 10px;
-            text-shadow: 
-                0 2px 10px rgba(0, 0, 0, 0.3),
-                0 0 30px rgba(212, 175, 55, 0.3);
-            line-height: 1.4;
-        }
-        
-        .urdu-title {
-            font-size: 3rem;
-            color: #ffffff;
-            margin-bottom: 20px;
-            font-family: 'Noto Nastaliq Urdu', serif;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            font-size: 2.8rem;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            line-height: 1.3;
+            margin-bottom: 5px;
         }
         
         .subtitle {
             font-size: 1.8rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 30px;
-            letter-spacing: 2px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 20px;
         }
         
         .bismillah {
-            font-size: 2.2rem;
-            color: #d4af37;
-            margin: 30px 0 20px;
+            font-size: 2rem;
+            color: #ffd700;
+            margin: 25px 0;
             font-family: 'Amiri', serif;
-            line-height: 1.6;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-            position: relative;
-            display: inline-block;
-            padding: 0 30px;
-        }
-        
-        .bismillah::before,
-        .bismillah::after {
-            content: '❁';
-            font-size: 1.5rem;
-            color: rgba(212, 175, 55, 0.6);
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        
-        .bismillah::before {
-            left: 0;
-        }
-        
-        .bismillah::after {
-            right: 0;
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 60px;
         }
         
         .message {
-            font-size: 1.8rem;
-            line-height: 2.2;
-            color: rgba(255, 255, 255, 0.95);
-            margin: 30px 0;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 30px;
+            font-size: 1.6rem;
+            line-height: 2;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 25px;
+            border-radius: 40px;
+            margin: 20px 0;
             border: 1px solid rgba(212, 175, 55, 0.3);
-            backdrop-filter: blur(5px);
-            box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.1);
-        }
-        
-        .message p {
-            margin: 15px 0;
-        }
-        
-        .spacer {
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #d4af37, transparent);
-            margin: 30px auto;
         }
         
         .features {
             display: flex;
-            justify-content: center;
-            gap: 30px;
             flex-wrap: wrap;
-            margin: 40px 0;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
         }
         
-        .feature-item {
-            text-align: center;
-            min-width: 150px;
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            color: #d4af37;
-            margin-bottom: 10px;
-        }
-        
-        .feature-text {
-            font-size: 1.3rem;
+        .feature-badge {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid #d4af37;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             color: white;
         }
         
+        .feature-badge i {
+            color: #d4af37;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            background: linear-gradient(145deg, #1e5f4a, #134432);
+            border: 2px solid #d4af37;
+            color: white;
+            padding: 18px 20px;
+            border-radius: 60px;
+            font-size: 1.5rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            font-weight: bold;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .btn:hover {
+            background: #1b7559;
+            transform: scale(1.02);
+            border-color: #ffe066;
+        }
+        
         .footer {
-            margin-top: 40px;
-            color: rgba(255, 255, 255, 0.7);
+            margin-top: 30px;
+            color: rgba(255,255,255,0.7);
             font-size: 1.3rem;
-            text-align: center;
         }
         
         .footer i {
             color: #d4af37;
-            margin: 0 5px;
         }
         
-        /* ریسپانسیو ڈیزائن */
-        @media (max-width: 768px) {
-            .container {
-                padding: 30px 20px;
-            }
-            
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .urdu-title {
-                font-size: 2.2rem;
-            }
-            
-            .bismillah {
-                font-size: 1.8rem;
-            }
-            
-            .message {
-                font-size: 1.5rem;
-                padding: 20px;
-            }
+        /* ریسپانسیو */
+        @media (max-width: 480px) {
+            h1 { font-size: 2.2rem; }
+            .subtitle { font-size: 1.4rem; }
+            .message { font-size: 1.3rem; }
+            .btn { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
-    <div class="islamic-pattern"></div>
-    <div class="container">
-        <div class="border-ornament"></div>
-        
-        <div class="header">
-            <div class="crescent">☪️</div>
-            <h1>نغماتِ روح</h1>
-            <div class="urdu-title">Naghmat_e_Ruh AI Studio</div>
-        </div>
+    <div class="main-card">
+        <div class="logo">☪️</div>
+        <h1>نغماتِ روح</h1>
+        <div class="subtitle">Naghmat_e_Ruh AI Studio</div>
         
         <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
         
         <div class="message">
             <p>ہمارا سفر شروع ہو چکا ہے۔</p>
-            <p>🌙</p>
-            <p>جلد آرہا ہے — پہلا AI نعت پلیٹ فارم</p>
+            <p>✨</p>
+            <p>پہلا AI نعت پلیٹ فارم جلد آرہا ہے</p>
         </div>
         
-        <div class="spacer"></div>
-        
         <div class="features">
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-mosque"></i></div>
-                <div class="feature-text">21 زبانیں</div>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-microphone-alt"></i></div>
-                <div class="feature-text">وائس کلوننگ</div>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-video"></i></div>
-                <div class="feature-text">4K ویڈیو</div>
-            </div>
+            <span class="feature-badge"><i class="fas fa-globe"></i> 21 زبانیں</span>
+            <span class="feature-badge"><i class="fas fa-microphone-alt"></i> وائس کلوننگ</span>
+            <span class="feature-badge"><i class="fas fa-video"></i> 4K ویڈیو</span>
+        </div>
+        
+        <div class="btn-group">
+            <a href="#" class="btn" onclick="alert('جلد آرہا ہے!')">نعت بنائیں</a>
+            <a href="#" class="btn" onclick="alert('جلد آرہا ہے!')">لاگ ان / رجسٹر</a>
         </div>
         
         <div class="footer">
             <i class="fas fa-heart"></i> اللہ اور اس کے رسول ﷺ کی محبت میں <i class="fas fa-heart"></i>
         </div>
     </div>
+
+    <!-- Firebase Configuration -->
+    <script>
+      // 🔥 Firebase کنفیگریشن (آپ کے پروجیکٹ کا)
+      const firebaseConfig = {
+        apiKey: "AIZaSyC82v-Q3fQEJRBpKuI2",
+        authDomain: "naghmat-e-ruh-aad73",
+        projectId: "naghmat-e-ruh-aad73",
+        storageBucket: "naghmat-e-ruh-aad73",
+        messagingSenderId: "540439912163",
+        appId: ""  // خالی چھوڑ دیں
+      };
+
+      // Firebase شروع کریں
+      firebase.initializeApp(firebaseConfig);
+      
+      console.log("✅ Firebase connected successfully!");
+    </script>
 </body>
 </html>
 ```
+
+---
